@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="author" content="HimaJyun">
+	<title>nullhive</title>
+</head>
+
+<h1>Good CPU, Bad Coin!!</h1>
+<p>公権力の濫用に反対！！！！</p>
+
+<label>スレッド数: <input id="js-value" type="range" min="1" max="128" value="1"><output id="js-output">1</output></label>
+<input id="js-start" type="button" value="開始">
+<input id="js-stop" type="button" value="停止">
+
+<script>
+	{
+		"use strict";
+		const range = document.getElementById("js-value");
+		let threads = [];
+
+		document.getElementById("js-start").addEventListener("click",function() {
+			if(threads.length != 0) {
+				return;
+			}
+			
+			const max = range.value;
+			for(let i=0;i<max;++i) {
+				threads.push(new Worker('./nullhive.js'));
+			}
+		});
+
+		document.getElementById("js-stop").addEventListener("click",function() {
+			for(let t of threads) {
+				t.terminate();
+			}
+			threads = [];
+		});
+
+		range.addEventListener("input",function() {
+			document.getElementById("js-output").textContent = range.value;
+		});
+	}
+</script>
+</body>
+</html>
